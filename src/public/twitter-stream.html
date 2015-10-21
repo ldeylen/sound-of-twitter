@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<h1 id="stream-name"></h1>
+<p>This is the proof of concept of the Sound of Twitter, but I am going to keep it in as a seperate page as it is kind of cool.</p>
+<p>This page converts each individual tweet into a 1 quater note of the composition deciding on what notes based on the emojis used in the tweet. The algorithm has a few emoji's with assigned notes which is looks for in the tweets and adds them in order of them coming in. As you arrive at the page you are sent the last 50 notes. When this is complete it will call for an updated 50 notes.</p>
+<p>I plan to refine the which notes are played more frequently based on how frequently emojis are used which will make the turn more pleasant on the ears.</p>
+
+
+
+<script type="application/javascript" src="assets/js/vendor/band.min.js"></script>
+<script type="application/javascript" src="assets/js/StreamComposition.js"></script>
+<script type="application/javascript">
+
+    //TODO Add a play pause button
+
+    var app = new StreamComposition('/twitterCompositionStream');
+    app.init();
+
+
+
+</script>
+
+</body>
+</html>
