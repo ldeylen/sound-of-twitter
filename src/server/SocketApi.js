@@ -1,14 +1,12 @@
 'use strict';
 
+
+
 var colors   = require('colors/safe');
 
 class SocketApi {
 
-    constructor(socketIO, options) {
-
-        this.options = Object.assign({
-
-        }, options);
+    constructor(socketIO) {
 
         this.io = socketIO;
 

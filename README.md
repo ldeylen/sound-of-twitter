@@ -1,5 +1,5 @@
 # sound-of-twitter
-Node.js application that analyses  a selection of recent tweets and converts them based on content into musical score.
+Node.js application that analyses a selection of recent tweets and converts them based on content into musical score.
 
 version 0.1.0
 
@@ -38,4 +38,12 @@ module.exports = Config;
 ```
 
 ## TO DO LIST
--Write the to do list
+-Create algorithm that converts tweets into a full bar of notes
+-Server to create a composition interval of Xmin creates an interval Xmin long
+-Save composition intervals in database so people can listen to specific times of the day
+-Create a User Interface for the Twitter Stream page
+-Create a User Interface for the Interval Compositions
+-Refine the algorithms to try and make the music more pleasant.
+
+## FUTURE PLANS
+-Plug other social media data streams into the algorithm to see what they sound like

@@ -2,15 +2,41 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>Twitter Stream Sound</title>
+
+    <link rel="stylesheet" href="assets/css/main.css"  />
+
 </head>
 <body>
 
-<h1 id="stream-name"></h1>
-<p>This is the proof of concept of the Sound of Twitter, but I am going to keep it in as a seperate page as it is kind of cool.</p>
-<p>This page converts each individual tweet into a 1 quater note of the composition deciding on what notes based on the emojis used in the tweet. The algorithm has a few emoji's with assigned notes which is looks for in the tweets and adds them in order of them coming in. As you arrive at the page you are sent the last 50 notes. When this is complete it will call for an updated 50 notes.</p>
-<p>I plan to refine the which notes are played more frequently based on how frequently emojis are used which will make the turn more pleasant on the ears.</p>
 
+<div id="wrapper">
+    <div id="header">
+        <h1>Sound of the Internet</h1>
+        <div id="navigation">
+            <ul>
+                <li><a href="#">Main</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Content</a></li>
+            </ul>
+        </div>
+
+    </div>
+    <div id="content">
+        <h1 id="stream-name"></h1>
+        <div id="data-visualisation">
+            <ul id="data-list">
+
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer">
+
+
+    </div>
+
+</div>
 
 
 <script type="application/javascript" src="assets/js/vendor/band.min.js"></script>

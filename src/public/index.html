@@ -3,23 +3,45 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>Sound of Twitter</title>
+
+    <link rel="stylesheet" href="assets/css/main.css"  />
+
 </head>
 <body>
 
     <div id="wrapper">
-        <h1>Sound of Twitter</h1>
+        <div id="header">
+            <h1>Sound of the Internet</h1>
+            <div id="navigation">
+                <ul>
+                    <li><a href="#">Main</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Content</a></li>
+                </ul>
+            </div>
 
+        </div>
+        <div id="content">
+
+        </div>
+
+        <div id="footer">
+
+
+        </div>
 
     </div>
 
-
-
-
-    <script type="application/javascript" src="https://cdn.socket.io/socket.io-1.3.7.js"></script>
     <script type="application/javascript" src="assets/js/vendor/band.min.js"></script>
-    <script type="application/javascript" src="assets/js/MusicPlayer.js"></script>
-    <script type="application/javascript" src="assets/js/App.js"></script>
-    <script type="application/javascript" src="assets/js/main.js"></script>
+    <script type="application/javascript" src="assets/js/LatestTrack.js"></script>
+    <script type="application/javascript">
+
+
+        var app = new LatestTrack('/latestTrack');
+        app.init();
+
+
+    </script>
 
 </body>
 </html>

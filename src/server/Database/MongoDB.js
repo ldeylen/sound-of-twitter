@@ -1,19 +1,23 @@
 'use strict';
+
 var colors              = require('colors/safe');
 var mongo               = require('mongodb');
 
-class Database {
+var config                  = require('../Config/MongoDbConfig');
 
-    constructor(options){
+class MongoDB {
+
+    constructor(){
         this.client = null;
 
 
         this.options = Object.assign({
-
-        } ,options);
+            url: 'mongodb://localhost:27017/',
+            name: 'sound-of-twitter'
+        } ,config);
     }
 
-    boot(){
+    start(){
         this.client = mongo.MongoClient;
         this.process((db)=>{
             console.log('Connected to MongoDB');
@@ -138,4 +142,4 @@ class Database {
 }
 
 
-module.exports = Database;
+module.exports = MongoDB;

@@ -7,6 +7,8 @@ class StreamComposition {
     constructor(dataURL){
         this.dataURL = dataURL;
         this.compositionData;
+
+        this.selectedNote = 0;
     }
 
     init(){
@@ -25,6 +27,7 @@ class StreamComposition {
                 this.compositionData = JSON.parse(request.responseText);
                 //console.log( "Data: " + JSON.stringify(this.compositionData));
                 this.buildComposition();
+                this.buildView();
             } else {
                 //TODO ADD DATA ERROR HANDLER
             }
@@ -38,8 +41,36 @@ class StreamComposition {
 
     }
 
-    buildComposition(){
+    buildView(){
         document.getElementById('stream-name').innerHTML= this.compositionData.name;
+        let html = "";
+        let notes = this.compositionData.notes;
+        let totalNotes = notes.length;
+        for(var i = 0; i < totalNotes; i++){
+            var note = notes[i];
+            html+='<li class="note-element"><p>'+note.text+'</p></li>';
+        }
+        console.log('HTML - '+html);
+        document.getElementById('data-list').innerHTML = html
+        this.selectedNote = 0;
+        this.playThrough();
+    }
+
+    playThrough(){
+        var element = document.getElementsByClassName('note-element')[this.selectedNote];
+        element.style.backgroundColor = "#00ff00";
+        this.selectedNote ++;
+        if(this.selectedNote < 50) {
+
+            setTimeout(()=> {
+                this.playThrough();
+            }, 310);
+        }
+
+    }
+
+
+    buildComposition(){
         let notes = this.compositionData.notes;
         let totalNotes = notes.length;
         for(var i = 0; i < totalNotes; i++){
@@ -102,6 +133,7 @@ class StreamComposition {
     resetInstrument(instrument){
         instrument.notes = [];
         instrument.totalDuration = 0;
+        //instrument.resetDuration();
 
     }
 

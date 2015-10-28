@@ -2,8 +2,6 @@
 
 var App             = require('./App');
 var colors	        = require('colors/safe');
-//var argv            = require('yargs').argv;
-
 
 /*
  |-------------------------------------------------------------
@@ -17,9 +15,4 @@ var colors	        = require('colors/safe');
 
 var app = new App();
 
-app.startServer(() => {
-    app.startSocketApi();
-    app.startTwitterFeed();
-    //app.startDatabase();
-
-});
+app.init();

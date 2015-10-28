@@ -2,19 +2,22 @@
 
 var events                  = require('events');
 var express                 = require('express');
+var path                    = require('path');
+var vhost                   = require('vhost');
+var colors                  = require('colors/safe');
+
+
+var SocketApi               = require('./SocketApi');
+var Database                = require('./Database/Database');
+var StreamProcessor         = require('./Streams/StreamController');
+var MusicController         = require('./Music/MusicController');
+var config                  = require('./Config/AppConfig');
+
 var app                     = express();
 var http                    = require('http').Server(app);
 var socketIO                = require('socket.io')(http);
-var path                    = require('path');
-var vhost                   = require('vhost');
 
-var colors                  = require('colors/safe');
 
-/* Local Classes */
-var SocketApi               = require('./SocketApi');
-var Database                = require('./Database');
-var TwitterFeed             = require('./TwitterFeed');
-var Config                  = require('./Config');
 
 /*
  *      Main application
@@ -25,9 +28,24 @@ var Config                  = require('./Config');
 
 class App {
 
-    constructor(options){
-        this.options = Object.assign(Config.app, options);
+    constructor(){
+
+        this.options = Object.assign({
+            vhost:      'localhost',
+            port:       3000
+        }, config);
+
         this.eventEmitter = new events.EventEmitter();
+    }
+
+    init(){
+        this.startServer(() => {
+            this.startMusic();
+            this.startSocketApi();
+            this.startStreamProcessor();
+            this.setGetRequests();
+            //this.startDatabase();
+        });
     }
 
     startServer(callback) {
@@ -40,37 +58,42 @@ class App {
             if(callback)callback();
             console.log(colors.green('>> Http: server listening on port ' + this.options.port + ' in %s mode'), app.settings.env);
         });
-
-        this.setGetRequests();
-
-    }
-
-    setGetRequests(){
-        app.get('/twitterCompositionStream', (req, res) => {
-            res.send(this.twitterFeed.getStreamComposition());
-        });
     }
 
     startSocketApi() {
-        this.socketApi = new SocketApi(socketIO, Config.socketIO);
+        this.socketApi = new SocketApi(socketIO);
         this.socketApi.start();
     }
 
 
-    startTwitterFeed(){
-        this.twitterFeed = new TwitterFeed(Config.twitter,this.eventEmitter);
-        this.twitterFeed.start();
-        //
-        //this.eventEmitter.on('NEW_TWEET', (data) =>{
-        //    console.log(data);
-        //});
+    startStreamProcessor(){
+        this.streamProcessor = new StreamProcessor(this.eventEmitter);
+        this.streamProcessor.start();
+
+        this.eventEmitter.on('NEW_STREAM_DATA', (data) =>{
+            //console.log(data);
+            this.musicController.addNewData(data);
+        });
+    }
+
+    startMusic(){
+        this.musicController = new MusicController(this.eventEmitter);
+        this.musicController.init();
     }
 
     startDatabase(){
-        this.database = new Database(Config.database);
+        this.database = new Database();
         this.database.boot();
     }
 
+    setGetRequests(){
+        app.get('/twitterCompositionStream', (req, res) => {
+            res.send(this.musicController.getTwitterStream());
+        });
+        app.get('/latestTrack', (req, res) => {
+            res.send(this.musicController.getLatestTrack());
+        });
+    }
 
 }
 

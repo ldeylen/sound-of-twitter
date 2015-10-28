@@ -1,30 +1,43 @@
 'use strict';
 
-var NoteLibrary             = require('./NoteLibrary');
+var NoteLibrary             = require('./StreamNoteLibrary');
+var config                  = require('../Config/StreamComposerConfig');
 
+class StreamComposerModel {
 
-class Composer {
-
-    constructor(options) {
+    constructor() {
         this.noteLibrary = new NoteLibrary();
+        this.options = Object.assign({
+            twitterSteamLength: 50
+        }, config);
+
+
+        this.twitterStream = {
+            name: "Twitter Stream",
+            notes: []
+        };
     }
 
-    createStream(name, maxLength){
-        this.streamMaxLength = maxLength;
-        this.streamComposition = {name: name, notes:[]};
+
+    addNewData(data){
+        this.addNoteToStream(data);
     }
 
     addNoteToStream(object){
-        var noteData = this.convertStreamToNotes(object.emojis);
+        var noteData = this.createNoteData(object.emojis);
+
         if(noteData) {
             object.notes = noteData;
-            this.streamComposition.notes.push(object);
-            if (this.streamComposition.notes.length > this.streamMaxLength)this.streamComposition.notes.shift();
-            //console.log(this.streamComposition.notes.length);
+            switch(object.type){
+                case "twitter":
+                    this.twitterStream.notes.push(object);
+                    if (this.twitterStream.notes.length > this.options.twitterSteamLength)this.twitterStream.notes.shift();
+                    break;
+            }
         }
     }
 
-    convertStreamToNotes(emojis){
+    createNoteData(emojis){
         let totalEmojis = emojis.length;
         let layer1 = [];
         let layer2 = [];
@@ -47,7 +60,6 @@ class Composer {
                 }
             }
         }
-        //TODO Remove duplicate Notes
 
         if(layer1.length == 0 && layer2.length == 0 && layer3.length == 0)return null;
         return {
@@ -58,12 +70,12 @@ class Composer {
 
     }
 
-    getStreamComposition(){
-        return this.streamComposition;
+    getTwitterStream(){
+        return this.twitterStream;
     }
 
 
 }
 
 
-module.exports = Composer;
+module.exports = StreamComposerModel;
